@@ -1,0 +1,4 @@
+TRUNCATE
+  users,
+  posts
+  RESTART IDENTITY CASCADE;
