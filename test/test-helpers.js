@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 function makeUsersArray() {
   return [
     {
@@ -5,8 +7,8 @@ function makeUsersArray() {
       user_name: 'test-user-1',
       full_name: 'Test user 1',
       email: 'user1@email.com',
-      password: 'Password@55',
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      password: 'Password!99',
+      date_created: new Date('2019-01-22T16:28:32.615Z'),
     },
     {
       user_id: 2,
@@ -14,7 +16,7 @@ function makeUsersArray() {
       full_name: 'Test user 2',
       email: 'user2@email.com',
       password: 'Password@66',
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: new Date('2019-01-22T16:28:32.615Z'),
     },
     {
       user_id: 3,
@@ -22,7 +24,7 @@ function makeUsersArray() {
       full_name: 'Test user 3',
       email: 'user3@email.com',
       password: 'Password@77',
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: new Date('2019-01-22T16:28:32.615Z'),
     },
     {
       user_id: 4,
@@ -31,6 +33,14 @@ function makeUsersArray() {
       email: 'user4@email.com',
       password: 'Password@88',
       date_created: new Date('2029-01-22T16:28:32.615Z'),
+    },
+    {
+      user_id: 5,
+      user_name: 'test-user-5',
+      full_name: 'Test user 5',
+      email: 'user5@email.com',
+      password: 'Password@99',
+      date_created: new Date('2020-01-22T16:28:32.615Z'),
     },
   ]
 }
@@ -42,7 +52,7 @@ function makePostsArray(users) {
       title: 'First test post!',
       section: 'Events',
       user_id: users[0].user_id,
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: new Date('2019-01-22T16:28:32.615Z'),
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
     {
@@ -50,7 +60,7 @@ function makePostsArray(users) {
       title: 'Second test post!',
       section: 'Cars',
       user_id: users[1].user_id,
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: new Date('2020-01-22T16:28:32.615Z'),
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
     {
@@ -58,7 +68,7 @@ function makePostsArray(users) {
       title: 'Third test post!',
       section: 'Apartments',
       user_id: users[2].user_id,
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: new Date('2019-01-22T16:28:32.615Z'),
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
     {
@@ -66,12 +76,19 @@ function makePostsArray(users) {
       title: 'Fourth test post!',
       section: 'Other',
       user_id: users[3].user_id,
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: new Date('2019-01-22T16:28:32.615Z'),
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
+    {
+      post_id: 5,
+      title: 'Fifth test post!',
+      section: 'Jobs',
+      user_id: users[4].user_id,
+      date_created: new Date('2020-01-22T16:28:32.615Z'),
+      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+    }
   ]
 }
-
 
 
 function makeExpectedPost(users, post) { // here
@@ -166,7 +183,32 @@ function seedMaliciousPost(db, user, post) {
     )
 }
 
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+  const token = jwt.sign({ user_id: user.user_id }, secret, {
+    subject: user.user_name,
+    algorithm: 'HS256',
+  })
+  return `Bearer ${token}`
+}
+
+function seedUsers(db, users) {
+  const preppedUsers = users.map(user => ({
+    ...user,
+    password: bcrypt.hashSync(user.password, 1)
+  }))
+  return db.transaction(async trx => {
+    await trx.into('users').insert(preppedUsers)
+
+    await trx.raw(
+      `SELECT setval('users_user_id_seq', ?)`,
+      [users[users.length - 1].user_id],
+    )
+  })
+}
+
 module.exports = {
+  makeAuthHeader,
+  seedUsers,
   makeUsersArray,
   makePostsArray,
   makeExpectedPost,

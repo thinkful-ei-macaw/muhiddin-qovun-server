@@ -10,18 +10,6 @@ const postRouter = express.Router();
 const jsonParser = express.json();
 
 postsRouter
-  .route('/sections')
-  .get((req, res, next) => {           
-    const knexInstance = req.app.get('db');
-    PostsService.getAllPostTypes(knexInstance)
-      .then(sections => {
-        res.json(sections.map(item => item.section));
-      })
-      .catch(next);
-  });
-
-
-postsRouter
   .route('/')
   .get((req, res, next) => {           
     const knexInstance = req.app.get('db');
@@ -30,10 +18,7 @@ postsRouter
         res.json(posts.map(serializePost));
       })
       .catch(next);
-  });
-
-postsRouter
-  .route('/addpost')
+  })
   .post(jsonParser, requireAuth, (req, res, next) => { 
     const { title, content, section } = req.body;
     const { user_id } = req.user;
@@ -59,7 +44,7 @@ postsRouter
   });
 
 postRouter
-  .route('/myposts') 
+  .route('/user-posts') 
   .all(requireAuth, (req, res, next) => {
     const { user_id } = req.user;
     PostsService.getPostsForUser(
@@ -94,7 +79,7 @@ postsRouter
         if (!post) {
           return res.status(404).json({
             // eslint-disable-next-line quotes
-            error: { message: `Post doesn't exist` }
+            error: `Post doesn't exist`
           });
         }
         res.post = post;

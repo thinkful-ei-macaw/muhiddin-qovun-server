@@ -1,7 +1,7 @@
 BEGIN;
 
 INSERT INTO users (user_id, user_name, full_name, email, password)
-VALUES
+VALUES 
   (1, 'user', 'User Name', 'user@example.com', '$2a$12$cVeeKwB/tGVpOocvvpojDOvT8TN.H8TN7l3AB.XgHXz24zsBXOIOy'),
   (2, 'john', 'John Doe', 'johndoe@aol.com', '$2a$12$VnPdsR07nV5lQ0rxZkd31OGE9EDJPQgMqHgR3nI9DuLLu3iDd8uaq');
 

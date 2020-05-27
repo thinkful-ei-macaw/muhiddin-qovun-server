@@ -3,7 +3,7 @@ const PostsService = {
     return knex.select('section').from('posts').distinct();
   },
   getAllPosts(knex) {
-    return knex.select('*').from('posts').orderBy('date_created', 'desc');
+    return knex.select('*').from('posts');
   },
   getPostsForUser(db, user_id) {
     return db
