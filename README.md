@@ -5,6 +5,12 @@ and help organize events and meetups, although the app is at the beginning stage
 
 Live: https://www.qovun.com/
 
+Client repo: https://github.com/thinkful-ei-macaw/muhiddin-qovun-client
+
+Server repo: https://github.com/thinkful-ei-macaw/muhiddin-qovun-server
+
+Done by [Muhiddin](https://github.com/muhiddinsgithub)
+
 ## Technologies
 
 HTML, CSS, React, NodeJS, Express, PostgreSQL
@@ -52,7 +58,7 @@ date_created: Date,
 full_name: String
 }
 
-#### /api/user-posts
+#### GET /api/user-posts
 
 // res.posts
 [
@@ -63,7 +69,7 @@ content: String,
 date_created: Date,
 user_id: Number,
 section: String
-} ...
+}, ...
 ]
 
 #### POST, PATCH /api/posts/:post_id
