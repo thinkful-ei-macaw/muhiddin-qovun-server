@@ -1,48 +1,44 @@
-const bcrypt = require('bcryptjs');
-const xss = require('xss');
+const bcrypt = require("bcryptjs");
+const xss = require("xss");
 
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
 
 const UsersService = {
   hasUserWithUserName(db, user_name) {
-    return db('users')
+    return db("users")
       .where({ user_name })
       .first()
-      .then(user => !!user);
+      .then((user) => !!user);
   },
   insertUser(db, newUser) {
     return db
       .insert(newUser)
-      .into('users')
-      .returning('*')
+      .into("users")
+      .returning("*")
       .then(([user]) => user);
   },
   getUserById(db, user_id) {
-    return db
-      .from('users')
-      .select('*')
-      .where('user_id', user_id)
-      .first();
+    return db.from("users").select("*").where("user_id", user_id).first();
   },
   validateUsername(user_name) {
     const pattern = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
-    if(!pattern.test(user_name)) {
-      return 'Username cannot have a underscore, hypen or space at the start or end';
+    if (!pattern.test(user_name)) {
+      return "Username cannot have a underscore, hypen or space at the start or end";
     }
     return null;
   },
   validatePassword(password) {
     if (password.length < 8) {
-      return 'Password is longer than 8 characters';
+      return "Password must be longer than 8 characters";
     }
     if (password.length > 72) {
-      return 'Password is less than 72 characters';
+      return "Password must be less than 72 characters";
     }
-    if (password.startsWith(' ') || password.endsWith(' ')) {
-      return 'Password must not start or end with empty spaces';
+    if (password.startsWith(" ") || password.endsWith(" ")) {
+      return "Password must not start or end with empty spaces";
     }
     if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
-      return 'Password must contain one upper case, lower case, number and special character';
+      return "Password must contain one upper case, lower case, number and special character";
     }
     return null;
   },
