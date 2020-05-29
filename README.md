@@ -11,22 +11,66 @@ HTML, CSS, React, NodeJS, Express, PostgreSQL
 
 ### Endpoints
 
-#### /api/auth/login
+#### POST /api/auth/login
 
-User login endpoint that handles user authentication
+// req.body
+{
+username: String,
+password: String
+}
 
-#### /api/users
+// res.body
+{
+authToken: String,
+user_id: ID
+}
 
-Posts/registers a new user
+#### POST /api/users
 
-#### /api/user/name
+// req.body
+{
+user_name: String,
+password: String,
+full_name: String,
+email: String
+}
 
-Gets a logged in user name
+// res.body
+{
+user_id: Number,
+user_name: String,
+full_name: String,
+password: String,
+email: String,
+date_created: Date,
+}
+
+#### GET /api/user/name
+
+// req.user
+{
+full_name: String
+}
 
 #### /api/user-posts
 
-Gets a user's own posts
+// res.posts
+[
+{
+post_id: Number,
+title: String,
+content: String,
+date_created: Date,
+user_id: Number,
+section: String
+} ...
+]
 
-#### /api/posts/:post_id
+#### POST, PATCH /api/posts/:post_id
 
-used to post a new post, delete or patch
+//res.post
+{
+title: String,
+content: String,
+section: String
+}
