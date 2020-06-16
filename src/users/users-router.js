@@ -50,14 +50,9 @@ usersRouter.post("/", jsonBodyParser, (req, res, next) => {
     .catch(next);
 });
 
-usersRouter
-  .get("/name", requireAuth, (req, res, next) => {
-    const { full_name } = req.user;
-    res.json({ full_name });
-  })
-  .get("/user_id", requireAuth, (req, res, next) => {
-    const { user_id } = req.user;
-    res.json({ user_id });
-  });
+usersRouter.get("/user", requireAuth, (req, res, next) => {
+  const { full_name, user_id } = req.user;
+  res.json({ full_name, user_id });
+});
 
 module.exports = usersRouter;

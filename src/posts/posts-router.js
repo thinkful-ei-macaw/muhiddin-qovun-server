@@ -23,6 +23,15 @@ postsRouter
     const { user_id } = req.user;
     const newPost = { user_id, title, content, section };
 
+    // validate post title and description
+
+    const postError = PostsService.validatePost(title, content);
+    if (postError) {
+      return res
+        .status(400)
+        .json({ error: `Title and description ${postError}` });
+    }
+
     for (const [key, value] of Object.entries(newPost))
       if (value === null)
         return res.status(400).json({
@@ -47,7 +56,6 @@ postRouter
       .then((posts) => {
         if (!posts) {
           return res.status(404).json({
-            // eslint-disable-next-line quotes
             error: { message: `Posts don't exist` },
           });
         }
@@ -95,10 +103,17 @@ postsRouter
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          // eslint-disable-next-line quotes
-          message: `Request body must content either 'title', 'userId' or 'content'`,
+          message: `Post must contain title and description`,
         },
       });
+    // validate post title and description
+
+    const postError = PostsService.validatePost(title, content);
+    if (postError) {
+      return res
+        .status(400)
+        .json({ error: `Title and description ${postError}` });
+    }
 
     PostsService.updatePost(req.app.get("db"), req.params.post_id, postToUpdate)
       .then((post) => {
