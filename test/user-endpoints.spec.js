@@ -48,7 +48,7 @@ describe("Users Router Endpoints", () => {
         });
       });
 
-      it("responds 400 'Password must be longer than 8 characters' when empty password", () => {
+      it("responds 400 'Password must be at least 8 characters long' when empty password", () => {
         const userShortPassword = {
           user_name: "test user_name",
           password: "1234567",
