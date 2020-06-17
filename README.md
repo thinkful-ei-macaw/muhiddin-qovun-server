@@ -68,7 +68,7 @@ To run tests, simply run `npm test` in the terminal.
 // req.body
 {
   full_name: String,
-  user_id: Number
+  user_name: String
 }
 
 ```
@@ -82,7 +82,7 @@ To run tests, simply run `npm test` in the terminal.
   {
     post_id: Number,
     section: String,
-    user_id: Number,
+    user_name: String,
     title: String,
     content: String,
     date_created: String,
@@ -99,8 +99,8 @@ To run tests, simply run `npm test` in the terminal.
     post_id: Number,
     title: String,
     content: String,
-    date_created: Date,
-    user_id: Number,
+    date_created: String,
+    user_name: String,
     section: String,
   },
 ];
@@ -123,7 +123,7 @@ To run tests, simply run `npm test` in the terminal.
 {
   post_id: Number,
   section: String,
-  user_id: Number,
+  user_name: String,
   title: String,
   content: String,
   date_created: String
@@ -139,7 +139,7 @@ To run tests, simply run `npm test` in the terminal.
 {
   post_id: Number,
   section: String,
-  user_id: Number,
+  user_name: String,
   title: String,
   content: String,
   date_created: String
@@ -173,7 +173,7 @@ To run tests, simply run `npm test` in the terminal.
   title: String,
   content: String,
   date_created: String,
-  user_id: Number,
+  user_name: String,
   section: String
 }
 ```
@@ -190,4 +190,4 @@ To run tests, simply run `npm test` in the terminal.
 
 ## Author
 
-[Muhiddin](https://github.com/muhiddinsgithub)
+- [Muhiddin](https://github.com/muhiddinsgithub)

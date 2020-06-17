@@ -1,15 +1,12 @@
 const PostsService = {
-  getAllPostTypes(knex) {
-    return knex.select("section").from("posts").distinct();
-  },
   getAllPosts(knex) {
     return knex.select("*").from("posts");
   },
-  getPostsForUser(db, user_id) {
+  getPostsForUser(db, user_name) {
     return db
       .from("posts")
       .select("*")
-      .where("user_id", user_id)
+      .where("user_name", user_name)
       .orderBy("date_created", "desc");
   },
   insertPost(knex, newPost) {

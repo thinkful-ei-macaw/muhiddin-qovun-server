@@ -4,8 +4,8 @@ CREATE TABLE posts (
   content TEXT NOT NULL,
   date_created TIMESTAMPTZ DEFAULT now
 () NOT NULL, 
-  user_id INTEGER
+  user_name TEXT
         REFERENCES users
-(user_id) ON
+(user_name) ON
 DELETE CASCADE NOT NULL
 );

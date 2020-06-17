@@ -20,8 +20,8 @@ postsRouter
   })
   .post(jsonParser, requireAuth, (req, res, next) => {
     const { title, content, section } = req.body;
-    const { user_id } = req.user;
-    const newPost = { user_id, title, content, section };
+    const { user_name } = req.user;
+    const newPost = { user_name, title, content, section };
 
     // validate post title and description
 
@@ -51,8 +51,8 @@ postsRouter
 postRouter
   .route("/user-posts")
   .all(requireAuth, (req, res, next) => {
-    const { user_id } = req.user;
-    PostsService.getPostsForUser(req.app.get("db"), user_id)
+    const { user_name } = req.user;
+    PostsService.getPostsForUser(req.app.get("db"), user_name)
       .then((posts) => {
         if (!posts) {
           return res.status(404).json({
@@ -96,8 +96,8 @@ postsRouter
   })
   .patch(requireAuth, jsonParser, (req, res, next) => {
     const { title, content, section } = req.body;
-    const { user_id } = req.user;
-    const postToUpdate = { title, content, section, user_id };
+    const { user_name } = req.user;
+    const postToUpdate = { title, content, section, user_name };
 
     const numberOfValues = Object.values(postToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
@@ -125,7 +125,7 @@ postsRouter
 const serializePost = (post) => ({
   post_id: post.post_id,
   section: post.section,
-  user_id: post.user_id,
+  user_name: post.user_name,
   title: xss(post.title),
   content: xss(post.content),
   date_created: post.date_created,

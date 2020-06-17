@@ -51,8 +51,8 @@ usersRouter.post("/", jsonBodyParser, (req, res, next) => {
 });
 
 usersRouter.get("/user", requireAuth, (req, res, next) => {
-  const { full_name, user_id } = req.user;
-  res.json({ full_name, user_id });
+  const { full_name, user_name } = req.user;
+  res.json({ full_name, user_name });
 });
 
 module.exports = usersRouter;
